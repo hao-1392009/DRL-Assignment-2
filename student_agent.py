@@ -422,7 +422,7 @@ class MCTS:
             highest_value = float("-inf")
             for child in node.children:
                 # value = child.score + self.approximator.value(child.state)
-                value = (child.score + self.approximator.value(child.state) * 1) / 1000
+                value = (child.score + self.approximator.value(child.state) * 5) / 1000
                 child.total_reward = value
                 child.visits = 1
 
