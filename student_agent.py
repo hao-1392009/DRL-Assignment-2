@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import copy
 import random
 import math
+import os
+import gdown
 
 
 COLOR_MAP = {
@@ -420,7 +422,7 @@ class MCTS:
             highest_value = float("-inf")
             for child in node.children:
                 # value = child.score + self.approximator.value(child.state)
-                value = (child.score + self.approximator.value(child.state) * 30) / 30000
+                value = (child.score + self.approximator.value(child.state) * 1) / 1000
                 child.total_reward = value
                 child.visits = 1
 
@@ -503,9 +505,13 @@ patterns = [[(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2)],
             [(0, 0), (0, 1), (1, 1), (2, 0), (2, 1), (3, 1)],
             [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 2)]]
 
+weights_file = "approximator_weights.pkl"
+if not os.path.isfile("approximator_weights.pkl"):
+    gdown.download("https://drive.google.com/file/d/1z7fmx_durhJyt8entLEauAnF4Cxi41Vb/view?usp=sharing",
+                   weights_file, fuzzy=True)
+
 approximator = NTupleApproximator(4, patterns)
-# with open("weights/weights_200000.pkl", "rb") as file:
-with open("approximator_weights.pkl", "rb") as file:
+with open(weights_file, "rb") as file:
     approximator.weights = pickle.load(file)
 
 def get_action(state, score):
@@ -513,8 +519,8 @@ def get_action(state, score):
     env.board = state
     env.score = score
 
-    mcts = MCTS(env, approximator, 100, 1.41, 0.99, 10)
-    root = MCTS_Node(state, False, env.score, env, None, None)  # Initialize the root node for MCTS
+    mcts = MCTS(env, approximator, 100, 1.41, 0.99, 4)
+    root = MCTS_Node(state, False, 0, env, None, None)  # Initialize the root node for MCTS
 
     # Run multiple simulations to construct and refine the search tree
     for _ in range(mcts.iterations):
