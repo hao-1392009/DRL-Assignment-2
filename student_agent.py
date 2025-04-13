@@ -506,9 +506,11 @@ patterns = [[(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2)],
             [(0, 0), (0, 1), (0, 2), (1, 0), (1, 2), (2, 2)]]
 
 weights_file = "approximator_weights.pkl"
-if not os.path.isfile("approximator_weights.pkl"):
-    gdown.download("https://drive.google.com/file/d/1z7fmx_durhJyt8entLEauAnF4Cxi41Vb/view?usp=sharing",
-                   weights_file, fuzzy=True)
+if not os.path.isfile(weights_file):
+    gdown.download(
+        "https://drive.google.com/file/d/1ZkOky4BKYB12p12CdsdyAm72cZtn_1Za/view?usp=sharing",
+        weights_file, fuzzy=True
+    )
 
 approximator = NTupleApproximator(4, patterns)
 with open(weights_file, "rb") as file:
